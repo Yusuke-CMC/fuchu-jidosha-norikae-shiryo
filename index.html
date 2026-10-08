@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>お車の今後を比べる資料|板金修理ご入庫のお客様へ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1F6; --surface:#FFFFFF; --ink:#14213D; --muted:#5B677A; --line:#D7DDE7; --soft:#F5F7FB;
+  --before:#1F3A5F; --damage:#C8442A; --after:#C98A1B; --ins:#0E8A7D; --own:#8F99AB;
+  --font:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1424; --surface:#172036; --ink:#E8ECF4; --muted:#9BA7BC; --line:#2A3654; --soft:#1C2742;
+    --before:#7FA6DE; --damage:#F0765C; --after:#E5B04A; --ins:#3CC3B2; --own:#78839B;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1424; --surface:#172036; --ink:#E8ECF4; --muted:#9BA7BC; --line:#2A3654; --soft:#1C2742;
+  --before:#7FA6DE; --damage:#F0765C; --after:#E5B04A; --ins:#3CC3B2; --own:#78839B;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.7;font-size:16px;-webkit-text-size-adjust:100%}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+button,input,summary{font-family:inherit}
+:focus-visible{outline:3px solid var(--ins);outline-offset:2px}
+
+.wrap{max-width:980px;margin:0 auto;padding:16px 16px 48px}
+
+/* ---------- スタッフ入力パネル ---------- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:20px}
+.panel summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel summary::-webkit-details-marker{display:none}
+.panel summary small{font-weight:400;color:var(--muted)}
+.panel .body{padding:4px 18px 18px;border-top:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px 16px;margin-top:14px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+.field .hint{display:block;font-size:12px;color:var(--muted);font-weight:400;line-height:1.4}
+.field input[type=text],.field input[type=number],.field input[type=date]{
+  width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font-size:16px}
+.group-title{margin:18px 0 0;font-size:13px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line);padding-bottom:4px}
+.toggle{display:flex;align-items:center;gap:10px;margin-top:14px;font-weight:700}
+.toggle input{width:20px;height:20px;accent-color:var(--ins)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{border:0;background:var(--before);color:#fff;padding:10px 18px;border-radius:6px;font-weight:700;font-size:15px;cursor:pointer}
+:root[data-theme="dark"] .btn{color:#0E1424}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn{color:#0E1424}}
+
+/* ---------- お客様向け資料 ---------- */
+.doc{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.doc-head{padding:28px 32px 22px;border-bottom:6px solid var(--before)}
+.shop{font-weight:700;color:var(--muted);font-size:14px;margin:0}
+.doc-head h1{font-size:clamp(24px,4.4vw,34px);line-height:1.35;margin:6px 0 14px;font-weight:900;letter-spacing:.02em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 24px;color:var(--muted);font-size:14px}
+.meta b{color:var(--ink);font-weight:700}
+.lead{margin:14px 0 0;max-width:42em}
+section.blk{padding:28px 32px;border-bottom:1px solid var(--line)}
+section.blk:last-of-type{border-bottom:0}
+section.blk h2{font-size:clamp(19px,3.4vw,24px);margin:0 0 4px;font-weight:900;line-height:1.4}
+section.blk .sub{margin:0 0 20px;color:var(--muted);font-size:14px}
+.empty{padding:40px 32px;text-align:center;color:var(--muted)}
+
+/* 価値の推移グラフ */
+.plot{position:relative;height:250px;display:flex;gap:18px;border-bottom:2px solid var(--ink);padding:0 4px}
+.slot{position:relative;flex:1;height:100%}
+.bar{position:absolute;left:14%;right:14%;bottom:0;border-radius:6px 6px 0 0;transition:height .35s ease}
+.slot .v{position:absolute;left:-6px;right:-6px;text-align:center;font-weight:900;font-size:clamp(15px,2.8vw,22px);transition:bottom .35s ease;white-space:nowrap}
+.caps{display:flex;gap:18px;padding:0 4px;margin-top:8px}
+.caps div{flex:1;text-align:center;font-weight:700;font-size:14px;line-height:1.4}
+.caps small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.deltas{display:grid;gap:8px;margin-top:20px}
+.delta{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;background:var(--soft);padding:10px 14px;border-radius:6px;border-left:5px solid var(--own)}
+.delta b{font-size:18px}
+.delta span{color:var(--muted);font-size:14px}
+
+/* 保険金の使い道 */
+.ins-chip{display:block;width:fit-content;margin:0 auto;background:var(--ins);color:#fff;padding:12px 28px;border-radius:8px;text-align:center;font-weight:700}
+:root[data-theme="dark"] .ins-chip{color:#0E1424}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ins-chip{color:#0E1424}}
+.ins-chip .amt{display:block;font-size:clamp(22px,4vw,30px);font-weight:900}
+.fork{display:block;width:100%;height:44px;color:var(--ins)}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lane{border:2px solid var(--line);border-radius:8px;padding:18px;background:var(--surface)}
+.lane h3{margin:0 0 2px;font-size:18px;font-weight:900}
+.lane .tag{color:var(--muted);font-size:13px;margin:0 0 14px}
+.stack{display:flex;height:34px;border-radius:5px;overflow:hidden;background:var(--soft);border:1px solid var(--line)}
+.stack i{display:block;height:100%;transition:width .35s ease}
+.rows{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.rows li{display:flex;align-items:center;gap:8px;font-size:14px}
+.rows .sw{width:12px;height:12px;border-radius:3px;flex:none}
+.rows .lb{flex:1}
+.rows .amt{font-weight:700}
+.rows li.total{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-size:16px;font-weight:900}
+.lane .note{margin:14px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
+
+/* 実質負担 */
+.cmp{display:grid;gap:18px}
+.cmp-item .row{display:flex;align-items:center;gap:12px}
+.cmp-item .name{width:12em;font-weight:700;flex:none;line-height:1.4}
+.cmp-item .track{flex:1;height:30px;background:var(--soft);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.cmp-item .fill{height:100%;transition:width .35s ease}
+.cmp-item .tot{width:8.5em;text-align:right;font-weight:900;font-size:18px;flex:none}
+.cmp-item .bd{margin:8px 0 0 calc(12em + 12px);font-size:13px;color:var(--muted);display:grid;gap:2px;max-width:34em}
+.cmp-item .bd div{display:flex;justify-content:space-between;gap:12px}
+.verdict{margin-top:22px;padding:16px 20px;background:var(--before);color:#fff;border-radius:8px;font-weight:700;font-size:17px;line-height:1.6}
+:root[data-theme="dark"] .verdict{color:#0E1424}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .verdict{color:#0E1424}}
+.verdict small{display:block;font-weight:400;font-size:13px;opacity:.9;margin-top:4px}
+.ref{margin-top:12px;font-size:13px;color:var(--muted)}
+
+/* 乗り換え先 */
+.next{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.next .cell{background:var(--soft);padding:14px 16px;border-radius:8px}
+.next .cell span{display:block;font-size:13px;color:var(--muted)}
+.next .cell b{font-size:22px;font-weight:900}
+.next .cell.key{background:var(--ins);color:#fff}
+:root[data-theme="dark"] .next .cell.key{color:#0E1424}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .next .cell.key{color:#0E1424}}
+.next .cell.key span{color:inherit;opacity:.9}
+
+.foot{padding:20px 32px 28px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.foot ul{margin:6px 0 0;padding-left:1.2em}
+
+@media (max-width:720px){
+  .doc-head,section.blk,.foot{padding-left:18px;padding-right:18px}
+  .lanes{grid-template-columns:1fr}
+  .fork{display:none}
+  .ins-chip{margin-bottom:14px}
+  .plot{height:210px;gap:8px}.caps{gap:8px}
+  .cmp-item .row{flex-wrap:wrap}
+  .cmp-item .name{width:100%}
+  .cmp-item .tot{width:auto;flex:none}
+  .cmp-item .bd{margin-left:0}
+}
+@media (prefers-reduced-motion: reduce){
+  .bar,.slot .v,.stack i,.cmp-item .fill{transition:none}
+}
+@media print{
+  :root{--bg:#fff;--surface:#fff;--ink:#14213D;--muted:#4a5568;--line:#cfd6e2;--soft:#f1f4f9;--before:#1F3A5F;--damage:#C8442A;--after:#C98A1B;--ins:#0E8A7D;--own:#8F99AB}
+  body{background:#fff;font-size:13px}
+  .wrap{padding:0;max-width:none}
+  .panel{display:none}
+  .doc{border:0;border-radius:0}
+  section.blk{break-inside:avoid;padding:16px 8px}
+  .doc-head{padding:12px 8px}
+  .plot{height:190px}
+  .ins-chip,.verdict,.next .cell.key{color:#fff!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{size:A4;margin:12mm}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ========== スタッフ入力(印刷されません) ========== -->
+  <details class="panel" id="panel" open>
+    <summary>入力欄(スタッフ用)<small>数字を入れると下の資料がすぐ変わります</small></summary>
+    <div class="body">
+      <p class="group-title">資料の見出し</p>
+      <div class="grid">
+        <div class="field"><label for="shop">店名</label><input type="text" id="shop" value="府中自動車"></div>
+        <div class="field"><label for="cust">お客様名</label><input type="text" id="cust" value="山田 太郎"></div>
+        <div class="field"><label for="car">お車</label><input type="text" id="car" value="トヨタ プリウス(令和3年式)"></div>
+        <div class="field"><label for="date">作成日</label><input type="date" id="date"></div>
+      </div>
+
+      <p class="group-title">査定額(円)</p>
+      <div class="grid">
+        <div class="field"><label for="A">① 事故前の査定額<span class="hint">事故がなかった場合の下取り見込み</span></label><input type="number" id="A" inputmode="numeric" min="0" step="10000" value="1500000"></div>
+        <div class="field"><label for="B">② 事故ダメージ状態の査定額<span class="hint">修理せず、現状のまま下取りに出した場合</span></label><input type="number" id="B" inputmode="numeric" min="0" step="10000" value="600000"></div>
+        <div class="field"><label for="C">③ 修理後の査定額<span class="hint">修復歴ありとして評価した見込み</span></label><input type="number" id="C" inputmode="numeric" min="0" step="10000" value="1100000"></div>
+      </div>
+
+      <p class="group-title">修理費・保険</p>
+      <div class="grid">
+        <div class="field"><label for="R">修理費(見積額)</label><input type="number" id="R" inputmode="numeric" min="0" step="10000" value="750000"></div>
+        <div class="field" id="Ifield"><label for="I">受け取れる保険金<span class="hint">免責金額を引いたあとの金額</span></label><input type="number" id="I" inputmode="numeric" min="0" step="10000" value="750000"></div>
+        <div class="field"><label for="N">乗り換え先の車両価格(任意)<span class="hint">諸費用込み。空欄なら表示しません</span></label><input type="number" id="N" inputmode="numeric" min="0" step="10000" placeholder="例 2800000"></div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="hasIns" checked> 保険対応の修理である</label>
+
+      <div class="actions">
+        <button class="btn" type="button" id="printBtn">印刷 / PDFで保存</button>
+      </div>
+    </div>
+  </details>
+
+  <!-- ========== お客様向け資料 ========== -->
+  <article class="doc" id="doc" aria-live="polite"></article>
+</div>
+
+<script>
+(function(){
+  var $ = function(id){return document.getElementById(id)};
+  var esc = function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var yen = function(n){return '¥' + Math.round(n).toLocaleString('ja-JP')};
+  var yenS = function(n){return (n<0?'−':'') + yen(Math.abs(n))};
+  var num = function(id){var v=parseFloat($(id).value);return isFinite(v)&&v>0?v:0};
+
+  // 日付の初期値(ローカル日付)
+  var d=new Date(), pad=function(x){return (x<10?'0':'')+x};
+  $('date').value = d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+
+  function fmtDate(v){
+    if(!v) return '';
+    var p=v.split('-'); return p[0]+'年'+(+p[1])+'月'+(+p[2])+'日';
+  }
+
+  function render(){
+    var shop=$('shop').value, cust=$('cust').value, car=$('car').value, date=fmtDate($('date').value);
+    var A=num('A'), B=num('B'), C=num('C'), R=num('R'), N=num('N');
+    var hasIns=$('hasIns').checked;
+    $('Ifield').style.opacity = hasIns ? 1 : .4;
+    $('I').disabled = !hasIns;
+    var I = hasIns ? num('I') : 0;
+
+    var head =
+      '<header class="doc-head">' +
+        '<p class="shop">'+esc(shop)+'</p>' +
+        '<h1>お車の今後を、2つの選択肢で比べてみましょう</h1>' +
+        '<div class="meta">' +
+          (cust?'<span>お客様 <b>'+esc(cust)+' 様</b></span>':'') +
+          (car?'<span>お車 <b>'+esc(car)+'</b></span>':'') +
+          (date?'<span>作成日 <b>'+esc(date)+'</b></span>':'') +
+        '</div>' +
+        '<p class="lead">このたびはご入庫ありがとうございます。修理して乗り続ける場合と、乗り換える場合で、お手元に残る価値がどう変わるかを一枚にまとめました。</p>' +
+      '</header>';
+
+    if(!A){
+      $('doc').innerHTML = head + '<div class="empty">「事故前の査定額」を入力すると、比較が表示されます。</div>';
+      return;
+    }
+
+    /* ---- 計算 ---- */
+    var drop1 = A - B;                       // 事故による下落(現状査定)
+    var rec   = C - B;                       // 修理による回復
+    var drop2 = A - C;                       // 修理後もなお残る目減り(修復歴など)
+    var covered = Math.min(I, R);            // 保険金で修理費をまかなう分
+    var own     = Math.max(R - I, 0);        // 修理費のお客様負担
+    var surplus = Math.max(I - R, 0);        // 保険金の余り
+    var F = B + I;                           // 乗り換え原資(現状下取り + 保険金)
+    var loss1 = drop2 + (R - I);             // 修理して乗り続ける:実質負担
+    var loss2 = A - F;                       // 乗り換え:実質負担
+    var G = C + I - R;                       // 参考:修理後に乗り換える場合の原資
+
+    /* ---- 1. 価値の推移 ---- */
+    var mx = Math.max(A,B,C,1);
+    function bar(label, sub, v, color){
+      var p = Math.max(v/mx*86, v>0?2:0);
+      return {p:p, v:v, color:color, label:label, sub:sub};
+    }
+    var bars = [
+      bar('事故前','事故がなかった場合',A,'var(--before)'),
+      bar('事故ダメージ状態','修理せず現状のまま',B,'var(--damage)'),
+      bar('修理後','修復歴ありの評価',C,'var(--after)')
+    ];
+    var plot='', caps='';
+    bars.forEach(function(b){
+      plot += '<div class="slot"><div class="v num" style="bottom:calc('+b.p+'% + 6px)">'+yen(b.v)+'</div><div class="bar" style="height:'+b.p+'%;background:'+b.color+'"></div></div>';
+      caps += '<div>'+b.label+'<small>'+b.sub+'</small></div>';
+    });
+    var s1 =
+      '<section class="blk">' +
+        '<h2>事故でお車の価値はこう変わります</h2>' +
+        '<p class="sub">下取り・買取の査定額の目安です。</p>' +
+        '<div class="plot" role="img" aria-label="事故前'+yen(A)+'、事故ダメージ状態'+yen(B)+'、修理後'+yen(C)+'">'+plot+'</div>' +
+        '<div class="caps">'+caps+'</div>' +
+        '<div class="deltas">' +
+          '<div class="delta" style="border-left-color:var(--damage)"><b class="num">'+yenS(-drop1)+'</b><span>事故のダメージで下がる金額</span></div>' +
+          '<div class="delta" style="border-left-color:var(--after)"><b class="num">+'+yen(Math.max(rec,0))+'</b><span>修理で回復する金額</span></div>' +
+          '<div class="delta" style="border-left-color:var(--before)"><b class="num">'+yenS(-drop2)+'</b><span>修理しても事故前に戻らない金額(修復歴の影響)</span></div>' +
+        '</div>' +
+      '</section>';
+
+    /* ---- 2. 保険金の使い道 ---- */
+    var s2='';
+    if(hasIns && I>0){
+      var m2 = Math.max(R,F,1);
+      var w = function(v){return (v/m2*100)+'%'};
+      var lane1 =
+        '<div class="lane">' +
+          '<h3>修理して乗り続ける</h3>' +
+          '<p class="tag">保険金を修理費にあてます</p>' +
+          '<div class="stack" aria-hidden="true"><i style="width:'+w(covered)+';background:var(--ins)"></i><i style="width:'+w(own)+';background:var(--own)"></i></div>' +
+          '<ul class="rows">' +
+            '<li><span class="sw" style="background:var(--ins)"></span><span class="lb">保険金でまかなう</span><span class="amt num">'+yen(covered)+'</span></li>' +
+            '<li><span class="sw" style="background:var(--own)"></span><span class="lb">お客様のご負担</span><span class="amt num">'+yen(own)+'</span></li>' +
+            '<li class="total"><span class="lb">修理費</span><span class="num">'+yen(R)+'</span></li>' +
+          '</ul>' +
+          (surplus>0?'<p class="note">保険金が修理費を '+yen(surplus)+' 上回っています。</p>':'') +
+        '</div>';
+      var lane2 =
+        '<div class="lane">' +
+          '<h3>乗り換える</h3>' +
+          '<p class="tag">今のお車を下取りに出し、保険金を頭金にあてます</p>' +
+          '<div class="stack" aria-hidden="true"><i style="width:'+w(B)+';background:var(--damage)"></i><i style="width:'+w(I)+';background:var(--ins)"></i></div>' +
+          '<ul class="rows">' +
+            '<li><span class="sw" style="background:var(--damage)"></span><span class="lb">現状のまま下取り</span><span class="amt num">'+yen(B)+'</span></li>' +
+            '<li><span class="sw" style="background:var(--ins)"></span><span class="lb">保険金</span><span class="amt num">'+yen(I)+'</span></li>' +
+            '<li class="total"><span class="lb">乗り換えにあてられる金額</span><span class="num">'+yen(F)+'</span></li>' +
+          '</ul>' +
+          '<p class="note">修理せずに保険金を受け取れるかどうかは、ご契約内容・保険会社により異なります。事前にご確認ください。</p>' +
+        '</div>';
+      s2 =
+        '<section class="blk">' +
+          '<h2>保険金は、修理にも乗り換えにも使えます</h2>' +
+          '<p class="sub">受け取る保険金の使い道は、修理費だけとは限りません。</p>' +
+          '<span class="ins-chip"><span>受け取れる保険金</span><span class="amt num">'+yen(I)+'</span></span>' +
+          '<svg class="fork" viewBox="0 0 100 44" preserveAspectRatio="none" aria-hidden="true">' +
+            '<g fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke">' +
+              '<path d="M50 0 V16 M25 16 H75 M25 16 V44 M75 16 V44" vector-effect="non-scaling-stroke"/>' +
+            '</g>' +
+          '</svg>' +
+          '<div class="lanes">'+lane1+lane2+'</div>' +
+        '</section>';
+    }
+
+    /* ---- 3. 実質負担の比較 ---- */
+    var mx3 = Math.max(loss1, loss2, 1);
+    var pw = function(v){return Math.max(v,0)/mx3*100 + '%'};
+    var fl = function(v){return v>=0 ? yen(v) : '+'+yen(-v)};
+    var diff = loss1 - loss2;
+    var verdict;
+    if(Math.abs(diff) < 10000){
+      verdict = '今回の試算では、どちらを選んでも実質の負担はほぼ同じです。<small>お車への愛着や、今後のご予定でお選びください。</small>';
+    } else if(diff > 0){
+      verdict = '今回の試算では、乗り換えのほうが実質の負担が '+yen(diff)+' 少なくなります。<small>数字だけでなく、走行距離・お車への愛着・次のご予定も含めてご相談ください。</small>';
+    } else {
+      verdict = '今回の試算では、修理して乗り続けるほうが実質の負担が '+yen(-diff)+' 少なくなります。<small>数字だけでなく、走行距離・お車への愛着・次のご予定も含めてご相談ください。</small>';
+    }
+    var s3 =
+      '<section class="blk">' +
+        '<h2>実質の負担で比べると</h2>' +
+        '<p class="sub">「事故前の価値」に対して、実質的にいくら目減りするかを比べています。短いほうが有利です。</p>' +
+        '<div class="cmp">' +
+          '<div class="cmp-item">' +
+            '<div class="row"><div class="name">修理して乗り続ける</div><div class="track"><div class="fill" style="width:'+pw(loss1)+';background:var(--after)"></div></div><div class="tot num">'+fl(loss1)+'</div></div>' +
+            '<div class="bd num">' +
+              '<div><span>修理後も残る価値の目減り(事故前 − 修理後)</span><span>'+yenS(drop2)+'</span></div>' +
+              '<div><span>修理費のお客様負担(修理費 − 保険金)</span><span>'+yenS(R-I)+'</span></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cmp-item">' +
+            '<div class="row"><div class="name">乗り換える</div><div class="track"><div class="fill" style="width:'+pw(loss2)+';background:var(--ins)"></div></div><div class="tot num">'+fl(loss2)+'</div></div>' +
+            '<div class="bd num">' +
+              '<div><span>事故前の価値</span><span>'+yen(A)+'</span></div>' +
+              '<div><span>乗り換えにあてられる金額(下取り'+(hasIns?' + 保険金':'')+')</span><span>−'+yen(F)+'</span></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="verdict">'+verdict+'</div>' +
+        '<p class="ref num">参考:修理したあとで乗り換える場合は、乗り換えにあてられる金額が '+yen(G)+'(修理後の査定額 + 保険金 − 修理費)になります。</p>' +
+      '</section>';
+
+    /* ---- 4. 乗り換え先 ---- */
+    var s4='';
+    if(N>0){
+      var rest = N - F;
+      s4 =
+        '<section class="blk">' +
+          '<h2>乗り換えた場合のお支払い</h2>' +
+          '<p class="sub">乗り換え先のお車の価格と、いまのお車の価値で計算した目安です。</p>' +
+          '<div class="next num">' +
+            '<div class="cell"><span>乗り換え先の車両価格(諸費用込み)</span><b>'+yen(N)+'</b></div>' +
+            '<div class="cell"><span>乗り換えにあてられる金額</span><b>'+yen(F)+'</b></div>' +
+            '<div class="cell key"><span>'+(rest>=0?'追加でご用意いただく金額':'お手元に残る金額')+'</span><b>'+yen(Math.abs(rest))+'</b></div>' +
+          '</div>' +
+        '</section>';
+    }
+
+    var foot =
+      '<footer class="foot"><b>ご確認ください</b><ul>' +
+        '<li>金額はすべて現時点の目安です。実際の査定額・保険金・お支払い額をお約束するものではありません。</li>' +
+        '<li>保険金のお支払い条件(修理せず受け取れるか、免責金額、全損の扱いなど)は、ご契約内容と保険会社の判断によります。</li>' +
+        '<li>保険を使うと、翌年度以降の等級や保険料に影響する場合があります。</li>' +
+        '<li>修復歴の有無は、下取り・買取の査定に影響します。</li>' +
+      '</ul></footer>';
+
+    $('doc').innerHTML = head + s1 + s2 + s3 + s4 + foot;
+  }
+
+  ['shop','cust','car','date','A','B','C','R','I','N','hasIns'].forEach(function(id){
+    $(id).addEventListener('input', render);
+    $(id).addEventListener('change', render);
+  });
+  $('printBtn').addEventListener('click', function(){ window.print(); });
+  render();
+})();
+</script>
+</body>
+</html>
